@@ -37,17 +37,24 @@ public class UserService {
     public List<Long> getImageId(Long id){
         List<UserPotion> tempList;
         List<Long> idList = new ArrayList<>();
-        tempList = userRepo.findById(Long.valueOf(1)).get().getPotions();
+
+        tempList = userRepo.findById(Long.valueOf(id)).get().getPotions();
+
         for (UserPotion z:tempList) {
             idList.add(z.getImageUrl().getId());
         }
+
         return idList;
     }
 
-    public void getImageById(int id, HttpServletResponse response) throws IOException {
+    public void getImageById(long id, HttpServletResponse response) throws IOException {
         String partOfURL;
         partOfURL = String.valueOf(imageRepo.findById(Long.valueOf(id)).get().getUrl());
+
+
         response.setContentType("Image");
+
+
         Path imagePath =  Path.of(staticImagePath+partOfURL);
         Files.copy(imagePath,response.getOutputStream());
     }

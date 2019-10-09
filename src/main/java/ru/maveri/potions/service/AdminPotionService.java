@@ -1,6 +1,8 @@
 package ru.maveri.potions.service;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -23,24 +25,27 @@ public class AdminPotionService {
     private PotionRepo potionRepo;
 
 
+    @Value( "${file.path}" )
+    private String staticImagePath;
+
     public Potion addNewPotion(Potion potion) {
         return potionRepo.save(potion);
     }
 
-    public void addImages(long id, MultipartHttpServletRequest request){
+    public void addImages(long id, MultipartHttpServletRequest request)  {
 
-
+        Potion potion = potionRepo.findById(id).get();
 
 
         request.getRequestHeaders();
         List<MultipartFile> imageList=request.getFiles("file");
 
-        Potion potion = potionRepo.findById(id).get();
+
 
         try {
 
 
-            Path pathDerictory = Path.of("/home/floy/imgs/");
+            Path pathDerictory = Path.of(staticImagePath);
             for (MultipartFile img:imageList ) {
                 String fileName;
                 Path imagePath = null;

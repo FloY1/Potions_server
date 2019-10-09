@@ -1,5 +1,6 @@
 package ru.maveri.potions.controller.admin.rest;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -34,7 +35,7 @@ public class AdminPotionController {
     }
 
     @PostMapping("{id}/image")
-    public void addImage(@PathVariable long id, MultipartHttpServletRequest request)  {
+    public void addImage(@PathVariable long id, MultipartHttpServletRequest request) {
 
         potionService.addImages(id,request);
 

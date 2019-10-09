@@ -12,8 +12,6 @@ public class MainController {
 
     @RequestMapping
     public String mainUs(){
-
-
         return "index";
     }
 

@@ -29,7 +29,7 @@ public class ImageController {
     }
 
     @GetMapping(value = "/{id}")
-    public void getImageById(@PathVariable int id, HttpServletResponse response) throws IOException {
+    public void getImageById(@PathVariable long id, HttpServletResponse response) throws IOException {
         response.setContentType("Image");
         userService.getImageById(id,response);
     }
