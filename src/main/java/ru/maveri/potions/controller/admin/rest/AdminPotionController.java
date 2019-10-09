@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import ru.maveri.potions.model.Potion;
-import ru.maveri.potions.service.AdminImageService;
 import ru.maveri.potions.service.AdminPotionService;
 
 
@@ -20,6 +19,13 @@ public class AdminPotionController {
     public AdminPotionController(AdminPotionService potionService) {
         this.potionService = potionService;
     }
+
+
+    @GetMapping
+    public Iterable<Potion> getAllPotion(){
+        return potionService.getAll();
+    }
+
 
     @PostMapping
     public Potion addPotion(@RequestBody Potion potion){

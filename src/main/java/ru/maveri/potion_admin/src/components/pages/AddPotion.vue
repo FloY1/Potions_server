@@ -15,8 +15,8 @@
                             <v-text-field label="Название"
                                           v-model="potion.name"/>
                         </v-col>
-                        <v-col class="py-0 ma-0"  cols="3">
-                            <input type="file" @change="onFileSelected">
+                        <v-col class="py-0 ma-0"  cols="4">
+                            <v-file-input multiple label="File" @change="onFileSelected"/>
                         </v-col>
 
 
@@ -136,7 +136,7 @@
                        p3: 1,
                        p4: 1,
                 },
-                selectedFile: null
+                selectedFiles: null
             }
         },
         methods:{
@@ -151,9 +151,9 @@
             onFileSelected(event){
 
 
-                this.selectedFile = event.target.files[0]
-                console.log(this.selectedFile.name);
+                this.selectedFile = event
 
+                console.log(this.selectedFile);
             }
         }
 

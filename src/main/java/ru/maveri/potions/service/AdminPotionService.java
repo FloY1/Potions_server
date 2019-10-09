@@ -22,10 +22,6 @@ public class AdminPotionService {
     @Autowired
     private PotionRepo potionRepo;
 
-    @Autowired
-    private ImageRepo imageRepo;
-
-
 
     public Potion addNewPotion(Potion potion) {
         return potionRepo.save(potion);
@@ -49,7 +45,7 @@ public class AdminPotionService {
                 String fileName;
                 Path imagePath = null;
                 do{
-                    fileName = ((int)(Math.random()*100))+img.getOriginalFilename() ;
+                    fileName = potion.getName()+"_"+((int)(Math.random()*100))+img.getOriginalFilename() ;
                     imagePath = pathDerictory.resolve(Paths.get(fileName));
                 }while (new File(imagePath.toUri()).isFile());
                 Files.copy(img.getInputStream(),imagePath);
@@ -63,5 +59,9 @@ public class AdminPotionService {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public Iterable<Potion> getAll() {
+        return potionRepo.findAll();
     }
 }

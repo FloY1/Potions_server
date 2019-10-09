@@ -11,14 +11,23 @@
 import AppBar from './components/AppBar';
 import AddPotion from './components/pages/AddPotion';
 
+import { mapActions } from 'vuex'
+
+
 export default {
   name: 'App',
   components: {
     AppBar,
     AddPotion
   },
+  methods:{
+    ...mapActions(['getAppPotionActions'])
+  },
   data: () => ({
     //
   }),
+  created() {
+      this.getAppPotionActions()
+  }
 };
 </script>
