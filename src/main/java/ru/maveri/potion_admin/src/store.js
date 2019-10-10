@@ -31,6 +31,7 @@ export default new Vuex.Store({
       const potion = await result.json()
 
 
+
       const fd = new FormData()
 
       data.file.forEach(el=>{
@@ -38,7 +39,7 @@ export default new Vuex.Store({
       })
 
 
-      await PotionApi.addImage(fd,potion.id)
+     PotionApi.addImage(fd,potion.id)
 
     },
 
