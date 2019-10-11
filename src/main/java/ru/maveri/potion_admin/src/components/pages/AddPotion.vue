@@ -16,7 +16,9 @@
                                           v-model="potion.name"/>
                         </v-col>
                         <v-col class="py-0 ma-0"  cols="4">
-                            <v-file-input multiple label="File" @change="onFileSelected"/>
+                            <v-file-input multiple label="File"
+                                          @change="onFileSelected"
+                            />
                         </v-col>
 
 
@@ -149,12 +151,8 @@
                 this.addPotion(data)
             },
             onFileSelected(event){
-
-
                 this.selectedFile = event
-
-                console.log(this.selectedFile);
-            }
+            },
         }
 
     }

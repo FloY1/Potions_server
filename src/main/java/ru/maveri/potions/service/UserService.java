@@ -73,5 +73,7 @@ public class UserService {
             coordinateList.remove(coordinate);
         }
         return coordinateList;
+
+
     }
 }

@@ -32,7 +32,7 @@ public class AdminPotionService {
         return potionRepo.save(potion);
     }
 
-    public void addImages(long id, MultipartHttpServletRequest request)  {
+    public Potion addImages(long id, MultipartHttpServletRequest request)  {
 
         Potion potion = potionRepo.findById(id).get();
 
@@ -60,10 +60,12 @@ public class AdminPotionService {
             }
 
             potionRepo.save(potion);
-
+            return potion;
         }catch (IOException e){
             e.printStackTrace();
         }
+
+        return null;
     }
 
     public Iterable<Potion> getAll() {

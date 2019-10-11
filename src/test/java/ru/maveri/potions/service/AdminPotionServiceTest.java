@@ -47,7 +47,7 @@ public class AdminPotionServiceTest {
     @MockBean
     private PotionRepo potionRepo;
 
-  
+
 
     @Test
     public void addNewPotion() {
