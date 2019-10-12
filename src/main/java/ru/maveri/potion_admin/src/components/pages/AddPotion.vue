@@ -1,6 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
 
     <v-card
+
             class="mx-auto my-3 pa-6"
             width="500px"
     >

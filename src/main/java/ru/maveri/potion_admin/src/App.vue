@@ -2,8 +2,8 @@
   <v-app>
     <app-bar/>
     <v-content>
-      <add-potion></add-potion>
       <add-recipe></add-recipe>
+      <add-potion></add-potion>
     </v-content>
   </v-app>
 </template>

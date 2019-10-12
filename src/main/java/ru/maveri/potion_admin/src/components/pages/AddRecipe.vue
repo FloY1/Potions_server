@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
 
-    <!--            <template>-->
+    <!--            <templates>-->
 
     <!--                <v-img-->
     <!--                        src="http://localhost:8080/image/1"-->
@@ -9,54 +9,46 @@
     <!--                        max-width="100"-->
     <!--                        max-height="100"-->
     <!--                ></v-img>-->
-    <!--            </template>-->
+    <!--            </templates>-->
 
     <v-card
+            class="mx-auto my-3 pa-6"
+            width="700px"
             color="blue-grey darken-1"
             dark
             :loading="isUpdating"
+            justify="center"
     >
-        <v-row align="center">
-            <v-col cols="2">
-                <v-select
-                        v-model="friends"
-                        :items="potions"
-                        chips
-                        label="Chips"
-                        solo
-                >
-                    <template v-slot:selection="data">
-                        <v-chip
-                                v-bind="data.attrs"
-                                :input-value="data.selected"
-                                close
-                                @click="data.select"
-                                @click:close="remove"
-                        >
-                            <v-avatar left>
-                                <v-img :src="'http://localhost:8080/image/' + data.item.firstImg "></v-img>
-                            </v-avatar>
-                            {{ data.item.name }}
-                        </v-chip>
-                    </template>
+        <v-container>
 
-                    <template v-slot:item="data">
-                        <template v-if="typeof data.item !== 'object'">
-                            <v-list-item-content v-text="data.item"></v-list-item-content>
-                        </template>
-                        <template v-else>
-                            <v-list-item-avatar>
-                                <v-img :src="'http://localhost:8080/image/' + data.item.firstImg "></v-img>
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                <v-list-item-title v-html="data.item.name"></v-list-item-title>
-                            </v-list-item-content>
-                        </template>
+            <v-row >
+                <v-col   md="6" >
+                    <autocomplete :select="firstSelect"></autocomplete>
+                    <template v-if="typeof firstPotion == 'object'">
+                        <potion-params :potion="firstPotion"/>
                     </template>
+                </v-col>
+                <v-col   md="6" >
+                    <autocomplete :select="secondSelect"></autocomplete>
+                    <template v-if="typeof secondPotion == 'object'">
+                        <potion-params   :potion="secondPotion"/>
+                    </template>
+                </v-col>
+            </v-row>
+        </v-container>
+<!--            <v-row >-->
+<!--                <v-col cols="6">-->
+<!--                    <templates v-if="typeof firstPotion == 'object'">-->
+<!--                        <potion-params :potion="firstPotion"/>-->
+<!--                    </templates>-->
+<!--                </v-col>-->
+<!--                <v-col cols="6">-->
+<!--                    <templates v-if="typeof secondPotion == 'object'">-->
+<!--                        <potion-params   :potion="secondPotion"/>-->
+<!--                    </templates>-->
+<!--                </v-col>-->
+<!--            </v-row>-->
 
-                </v-select>
-            </v-col>
-        </v-row>
 
 
 
@@ -73,17 +65,20 @@
 
 <script>
     import { mapState} from 'vuex'
+    import Autocomplete from "./part/AddRecipe/Autocomplete.vue";
+    import PotionParams from "./part/AddRecipe/PotionParams";
+
 
     export default {
-
+        components: {PotionParams, Autocomplete},
         computed: {...mapState(['potions'])},
         name: "AddRecipe",
-        data () {
-
+        data() {
             return {
 
                 autoUpdate: true,
-                friends: "",
+                firstPotion: "",
+                secondPotion: "",
                 isUpdating: false,
                 name: 'Midnight Crew',
 
@@ -91,22 +86,25 @@
                 title: 'The summer breeze',
             }
         },
-
-        // watch: {
-        //     isUpdating (val) {
-        //         if (val) {
-        //             setTimeout(() => (this.isUpdating = false), 3000)
-        //         }
-        //     },
-        // },
-
         methods: {
-            remove () {
-
-                this.friends= "";
+            firstSelect(potion) {
+                this.firstPotion = potion
             },
+            secondSelect(potion) {
+                this.secondPotion = potion
+            },
+
+
         },
+        watch: {
+            // isUpdating (firstPotion) {
+            //        console.log(firstPotion)
+            //
+            // },
+        },
+
     }
+
 </script>
 
 <style scoped>

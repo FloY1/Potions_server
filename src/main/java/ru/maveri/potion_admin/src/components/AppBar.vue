@@ -8,9 +8,9 @@
 
         <v-spacer></v-spacer>
 
-            <v-btn icon>
-               <v-icon>mdi-plus-circle</v-icon>
-            </v-btn>
+        <v-btn icon>
+            <v-icon>mdi-plus-circle</v-icon>
+        </v-btn>
 
 
     </v-app-bar>
