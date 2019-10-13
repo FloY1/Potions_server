@@ -1,42 +1,27 @@
 package ru.maveri.potions.service;
 
-import javassist.NotFoundException;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import ru.maveri.potions.model.Potion;
 import ru.maveri.potions.repo.PotionRepo;
+import ru.maveri.potions.service.util.ImageSave;
 
-import javax.persistence.Access;
-import javax.print.attribute.standard.PDLOverrideSupported;
-
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.FileStore;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-import static org.postgresql.hostchooser.HostRequirement.any;
+import static junit.framework.TestCase.*;
+import static org.mockito.ArgumentMatchers.any;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-
 public class AdminPotionServiceTest {
 
 
@@ -47,6 +32,10 @@ public class AdminPotionServiceTest {
     @MockBean
     private PotionRepo potionRepo;
 
+    @MockBean
+    private ImageSave imageSave;
+
+
 
 
     @Test
@@ -56,7 +45,6 @@ public class AdminPotionServiceTest {
        potionService.addNewPotion(newPotion);
        Mockito.verify(potionRepo,Mockito.times(1)).save(newPotion);
 
-
     }
 
 
@@ -65,5 +53,28 @@ public class AdminPotionServiceTest {
     public void getAll() {
         potionService.getAll();
         Mockito.verify(potionRepo,Mockito.times(1)).findAll();
+    }
+
+    @Test
+    public void addImage() {
+
+
+        MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
+        request.addFile(new MockMultipartFile("file",new byte[2]));
+        request.addFile(new MockMultipartFile("file",new byte[2]));
+
+        Potion potion = new Potion();
+        potion.setImages(new ArrayList<>());
+
+        Mockito.when(potionRepo.findById(any())).thenReturn(Optional.of(potion));
+        potionService.addImages(1,request);
+        Mockito.verify(potionRepo,Mockito.times(1)).findById(any());
+        Mockito.verify(imageSave,Mockito.times(2)).save(any(),any());
+        Mockito.verify(potionRepo,Mockito.times(1)).save(any(Potion.class));
+
+
+
+        assertEquals(potion.getImages().size(),2);
+
     }
 }
