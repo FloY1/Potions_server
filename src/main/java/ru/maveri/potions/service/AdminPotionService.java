@@ -1,6 +1,9 @@
 package ru.maveri.potions.service;
 
 import javassist.NotFoundException;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,56 +22,52 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Service
+@Slf4j
 public class AdminPotionService {
 
     @Autowired
     private PotionRepo potionRepo;
 
 
-    @Value( "${file.path}" )
+    @Value("${file.path}")
     private String staticImagePath;
 
     public Potion addNewPotion(Potion potion) {
         return potionRepo.save(potion);
     }
 
-    public Potion addImages(long id, MultipartHttpServletRequest request)  {
+    public Potion addImages(long id, MultipartHttpServletRequest request) {
 
         Potion potion = potionRepo.findById(id).get();
 
-
-        request.getRequestHeaders();
-        List<MultipartFile> imageList=request.getFiles("file");
+        addNewImageInPotion(potion, request);
 
 
-
-        try {
-
-
-            Path pathDerictory = Path.of(staticImagePath);
-            for (MultipartFile img:imageList ) {
-                String fileName;
-                Path imagePath = null;
-                do{
-                    fileName = potion.getName()+"_"+((int)(Math.random()*100))+img.getOriginalFilename() ;
-                    imagePath = pathDerictory.resolve(Paths.get(fileName));
-                }while (new File(imagePath.toUri()).isFile());
-                Files.copy(img.getInputStream(),imagePath);
-
-                potion.getImages().add( new ImageUrl(fileName));
-
-            }
-
-            potionRepo.save(potion);
-            return potion;
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-        return null;
+        potionRepo.save(potion);
+        return potion;
     }
 
     public Iterable<Potion> getAll() {
         return potionRepo.findAll();
+    }
+
+    private void addNewImageInPotion(Potion potion, MultipartHttpServletRequest request) {
+
+        val imageList = request.getFiles("file");
+        val pathDerictory = Path.of(staticImagePath);
+        for (MultipartFile img : imageList) {
+            String fileName;
+            Path imagePath = null;
+            do {
+                fileName = potion.getName() + "_" + ((int) (Math.random() * 100)) + img.getOriginalFilename();
+                imagePath = pathDerictory.resolve(Paths.get(fileName));
+            } while (new File(imagePath.toUri()).isFile());
+            try {
+                Files.copy(img.getInputStream(), imagePath);
+            } catch (IOException e) {
+                log.error(e.getMessage());
+            }
+            potion.getImages().add(new ImageUrl(fileName));
+        }
     }
 }

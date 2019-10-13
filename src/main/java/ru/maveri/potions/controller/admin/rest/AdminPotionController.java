@@ -2,6 +2,7 @@ package ru.maveri.potions.controller.admin.rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import javassist.NotFoundException;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -19,7 +20,7 @@ public class AdminPotionController  {
     private AdminPotionService potionService;
 
     @Autowired
-    public AdminPotionController (AdminPotionService potionService) {
+    public AdminPotionController (@NonNull AdminPotionService potionService) {
         this.potionService = potionService;
     }
 
@@ -32,13 +33,15 @@ public class AdminPotionController  {
 
     @PostMapping
     @JsonView(PotionView.PropId.class)
-    public Potion addPotion(@RequestBody Potion potion){
+    public Potion addPotion(@RequestBody  @NonNull Potion potion){
         return potionService.addNewPotion(potion);
 
     }
 
     @PostMapping("{id}/image")
-    public Potion addImage(@PathVariable long id, MultipartHttpServletRequest request) {
+    public Potion addImage(@PathVariable long id, @NonNull  MultipartHttpServletRequest request) {
+        if(id <0) throw new NumberFormatException("id < 0");
+
 
         return potionService.addImages(id,request);
 
